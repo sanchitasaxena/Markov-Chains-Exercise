@@ -66,11 +66,13 @@ def make_text(chains):
         #equivalent to: if chosen_word is None
         if not chosen_word:
             break
+        # if it's not the last key add the chosen_word to the text to string
         text = text + " " + chosen_word
+        # select new key
         current_key = (current_key[1], chosen_word)
         
     return text 
-
+# running our text file 
 input_path = "green-eggs.txt"
 
 # Open the file and turn it into one long string
