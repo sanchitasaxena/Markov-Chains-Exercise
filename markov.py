@@ -27,17 +27,23 @@ def make_chains(text_string):
     """
 
     chains = {}
+    #create an empty dictionary
     words = text_string.split()
+    #make text into string and then splitting it
     
     for i in range(len(words)-2):
+    #for every word in string except for last two words
         bi_gram = (words[i], words[i + 1])
-
+        #created key variable into tuple using two adjacent words
         if bi_gram in chains:
+        # if the key is in the dictionary add the next word into list of values/words
             chains[bi_gram].append(words[i+2])
         else:
+        # if word is not already in dictionary, create the list where word is placed
             chains[bi_gram] = [words[i+2]]
-
+    #defining variable for last key/tuple 
     last_bi_gram = (words[-2],words[-1])
+    #if it is the last bi_gram in dictionary, add None as a value in list of words else add none/ nothing
     if last_bi_gram in chains:
         chains[last_bi_gram].append(None)
     else:
@@ -49,14 +55,16 @@ def make_chains(text_string):
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
 
+    #current key is equal to a random key in the dictionary
     current_key = choice(chains.keys())
+    #text is a string equal to the first index of the tuple and the second index of the tuple
     text = current_key[0] + " " + current_key[1]
-
+    #create a loop that will repeat until the function reaches the last bi-gram
     while True:
-
+        #created a variable for a random value of the current key
         chosen_word = choice(chains[current_key])
+        #equivalent to: if chosen_word is None
         if not chosen_word:
-            #equivalent to: if chosen_word is None
             break
         text = text + " " + chosen_word
         current_key = (current_key[1], chosen_word)
