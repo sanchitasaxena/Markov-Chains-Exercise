@@ -31,13 +31,17 @@ def make_chains(text_string):
     
     for i in range(len(words)-2):
         bi_gram = (words[i], words[i + 1])
-        #print bi_gram
-
 
         if bi_gram in chains:
             chains[bi_gram].append(words[i+2])
         else:
             chains[bi_gram] = [words[i+2]]
+
+    last_bi_gram = (words[-2],words[-1])
+    if last_bi_gram in chains:
+        chains[last_bi_gram].append(None)
+    else:
+        chains[last_bi_gram] = [None]
 
     return chains
 
@@ -45,15 +49,19 @@ def make_chains(text_string):
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
 
-    text = ""
+    current_key = choice(chains.keys())
+    text = current_key[0] + " " + current_key[1]
 
-    current_key = choice(chains)
-    chosen_word = choice(chains[current_key])
-    new_key = (current_key[1], chosen_word)
-    #print current_key, new_key
-    print current_key
-    #return text
+    while True:
 
+        chosen_word = choice(chains[current_key])
+        if not chosen_word:
+            #equivalent to: if chosen_word is None
+            break
+        text = text + " " + chosen_word
+        current_key = (current_key[1], chosen_word)
+        
+    return text 
 
 input_path = "green-eggs.txt"
 
@@ -63,7 +71,7 @@ input_text = open_and_read_file(input_path)
 # Get a Markov chain
 chains = make_chains(input_text)
 
-print chains
+# print chains
 
 # Produce random text
 random_text = make_text(chains)
